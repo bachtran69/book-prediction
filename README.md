@@ -1,1 +1,1 @@
-# book-prediction
+# Book prediction app
