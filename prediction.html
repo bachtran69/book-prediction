@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ChatApp</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="py-5 text-center">
+        <a href="/"><h2>PREDICTION</h2></a>
+        <p class="lead">Prediction model for book weight</p>
+      </div>
+      <div>
+        <!-- form div-->
+        <form
+          id="predictForm"
+          class="needs-validation col-lg-6 offset-lg-3"
+        >
+          <div class="form-group">
+            <label for="email" style="font-size: x-large;">Pages</label>
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Enter pages"
+              id="pages"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="pwd" style="font-size: x-large;">Price (VND)</label>
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Enter price"
+              id="price"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="pwd" style="font-size: x-large;">Size (cm<sup>2</sup>)</label>
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Enter size"
+              id="size"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="cover" style="font-size: x-large;">Cover type</label><br />
+            <input type="radio" id="soft" name="cover" value="1" required/>
+            <label for="soft">Soft</label><br />
+            <input type="radio" id="hard" name="cover" value="0" required/>
+            <label for="hard">Hard</label><br />
+          </div>
+
+          <button type="submit" class="btn btn-primary">Predict</button>
+        </form>
+      </div>
+
+      <br>
+      <br>
+      <div class="container" id="result" style="display: none;"> <!-- Result div-->
+
+        <div class="row alert alert-info col-lg-6 offset-lg-3">
+          <h5>Prediction for book weight: </h5>
+          <div id="content"></div>
+        </div>
+        <div class="col-md-6">
+          <div id="content"></div>
+          <div>
+            <span class="float-right">
+              <button
+                id="clear"
+                class="btn btn-primary"
+                (click)="clearMessages()"
+              >
+                Reset
+              </button>
+            </span>
+          </div>
+          
+        </div>
+
+      </div>
+
+
+    </div>
+    <script>
+
+      $(function () {
+        //shorthand document.ready function
+        $("#predictForm").on("submit", function (e) {
+          e.preventDefault(); //prevent form from submitting
+          var pages = $("#pages").val();
+          var price = $("#price").val();
+          var size = $("#size").val();
+          var coverType = $('input[name="cover"]:checked').val();
+
+          var prediction = predict(pages, price, size, coverType);
+
+          $('#result').show();
+          $("#content").html("<h3>" + prediction + " kg</h3>")
+         
+
+        });
+      });
+
+      function predict(page, price, size, coverType) {
+        var prediction =
+          2.211 * Math.pow(10, -1) +
+          4.563 * Math.pow(10, -4) * page -
+          7.295 * Math.pow(10, -2) * coverType +
+          1.232 * Math.pow(10, -6) * price +
+          5.521 * Math.pow(10, -4) * size;
+        return Math.pow(prediction, 2);
+      }
+
+      function clearMessages() {
+     
+      }
+
+      $("#result").on('click', '#clear', function () {
+        $("#pages").val("");
+        $("#price").val("");
+        $("#size").val("");
+        $("#result").hide();
+        $('input[name="cover"]:checked').prop('checked', false)
+        console.log("clear")
+      });
+
+
+    </script>
+  </body>
+</html>
